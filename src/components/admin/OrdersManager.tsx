@@ -20,7 +20,6 @@ import {
 import { toast } from 'sonner@2.0.3';
 import { getOrders, updateOrderStatus, deleteOrder } from '../../utils/api';
 import { checkConnection } from '../../utils/checkConnection';
-import { PasswordResetBanner } from './PasswordResetBanner';
 
 interface OrdersManagerProps {
   password: string;

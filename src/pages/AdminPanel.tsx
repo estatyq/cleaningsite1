@@ -34,7 +34,9 @@ import {
   Percent,
   ShoppingCart,
   Download,
-  HelpCircle
+  HelpCircle,
+  Shield,
+  Wifi
 } from 'lucide-react';
 import { toast } from 'sonner@2.0.3';
 
@@ -308,66 +310,66 @@ export const AdminPanel = memo(() => {
 
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-5 lg:grid-cols-14 mb-8 h-auto gap-1">
-            <TabsTrigger value="orders" className="text-xs lg:text-sm px-2">
-              <ShoppingCart className="w-4 h-4 mr-0 lg:mr-2" />
-              <span className="hidden sm:inline">Замовлення</span>
+          <TabsList className="flex flex-wrap w-full justify-start mb-8 h-auto gap-2 p-2 bg-card/50 backdrop-blur-sm">
+            <TabsTrigger value="orders" className="flex-shrink-0">
+              <ShoppingCart className="w-4 h-4 mr-2" />
+              <span>Замовлення</span>
             </TabsTrigger>
-            <TabsTrigger value="services" className="text-xs lg:text-sm px-2">
-              <FileText className="w-4 h-4 mr-0 lg:mr-2" />
-              <span className="hidden sm:inline">Послуги</span>
+            <TabsTrigger value="services" className="flex-shrink-0">
+              <FileText className="w-4 h-4 mr-2" />
+              <span>Послуги</span>
             </TabsTrigger>
-            <TabsTrigger value="contacts" className="text-xs lg:text-sm px-2">
-              <Phone className="w-4 h-4 mr-0 lg:mr-2" />
-              <span className="hidden sm:inline">Контакти</span>
+            <TabsTrigger value="contacts" className="flex-shrink-0">
+              <Phone className="w-4 h-4 mr-2" />
+              <span>Контакти</span>
             </TabsTrigger>
-            <TabsTrigger value="branding" className="text-xs lg:text-sm px-2">
-              <Image className="w-4 h-4 mr-0 lg:mr-2" />
-              <span className="hidden sm:inline">Бренд</span>
+            <TabsTrigger value="branding" className="flex-shrink-0">
+              <Image className="w-4 h-4 mr-2" />
+              <span>Бренд</span>
             </TabsTrigger>
-            <TabsTrigger value="hero-images" className="text-xs lg:text-sm px-2">
-              <Image className="w-4 h-4 mr-0 lg:mr-2" />
-              <span className="hidden sm:inline">Hero</span>
+            <TabsTrigger value="hero-images" className="flex-shrink-0">
+              <Image className="w-4 h-4 mr-2" />
+              <span>Hero</span>
             </TabsTrigger>
-            <TabsTrigger value="benefits" className="text-xs lg:text-sm px-2">
-              <Shield className="w-4 h-4 mr-0 lg:mr-2" />
-              <span className="hidden sm:inline">Переваги</span>
+            <TabsTrigger value="benefits" className="flex-shrink-0">
+              <Shield className="w-4 h-4 mr-2" />
+              <span>Переваги</span>
             </TabsTrigger>
-            <TabsTrigger value="discount" className="text-xs lg:text-sm px-2">
-              <Percent className="w-4 h-4 mr-0 lg:mr-2" />
-              <span className="hidden sm:inline">Знижка</span>
+            <TabsTrigger value="discount" className="flex-shrink-0">
+              <Percent className="w-4 h-4 mr-2" />
+              <span>Знижка</span>
             </TabsTrigger>
-            <TabsTrigger value="pricing" className="text-xs lg:text-sm px-2">
-              <DollarSign className="w-4 h-4 mr-0 lg:mr-2" />
-              <span className="hidden sm:inline">Ціни</span>
+            <TabsTrigger value="pricing" className="flex-shrink-0">
+              <DollarSign className="w-4 h-4 mr-2" />
+              <span>Ціни</span>
             </TabsTrigger>
-            <TabsTrigger value="reviews" className="text-xs lg:text-sm px-2">
-              <MessageSquare className="w-4 h-4 mr-0 lg:mr-2" />
-              <span className="hidden sm:inline">Відгуки</span>
+            <TabsTrigger value="reviews" className="flex-shrink-0">
+              <MessageSquare className="w-4 h-4 mr-2" />
+              <span>Відгуки</span>
             </TabsTrigger>
-            <TabsTrigger value="gallery" className="text-xs lg:text-sm px-2">
-              <Image className="w-4 h-4 mr-0 lg:mr-2" />
-              <span className="hidden sm:inline">Галерея</span>
+            <TabsTrigger value="gallery" className="flex-shrink-0">
+              <Image className="w-4 h-4 mr-2" />
+              <span>Галерея</span>
             </TabsTrigger>
-            <TabsTrigger value="blog" className="text-xs lg:text-sm px-2">
-              <FileText className="w-4 h-4 mr-0 lg:mr-2" />
-              <span className="hidden sm:inline">Блог</span>
+            <TabsTrigger value="blog" className="flex-shrink-0">
+              <FileText className="w-4 h-4 mr-2" />
+              <span>Блог</span>
             </TabsTrigger>
-            <TabsTrigger value="account" className="text-xs lg:text-sm px-2">
-              <Shield className="w-4 h-4 mr-0 lg:mr-2" />
-              <span className="hidden sm:inline">Акаунт</span>
+            <TabsTrigger value="account" className="flex-shrink-0">
+              <Shield className="w-4 h-4 mr-2" />
+              <span>Акаунт</span>
             </TabsTrigger>
-            <TabsTrigger value="diagnostics" className="text-xs lg:text-sm px-2">
-              <Wifi className="w-4 h-4 mr-0 lg:mr-2" />
-              <span className="hidden sm:inline">Діагностика</span>
+            <TabsTrigger value="diagnostics" className="flex-shrink-0">
+              <Wifi className="w-4 h-4 mr-2" />
+              <span>Діагностика</span>
             </TabsTrigger>
-            <TabsTrigger value="export-import" className="text-xs lg:text-sm px-2">
-              <Download className="w-4 h-4 mr-0 lg:mr-2" />
-              <span className="hidden sm:inline">Експорт/Імпорт</span>
+            <TabsTrigger value="export-import" className="flex-shrink-0">
+              <Download className="w-4 h-4 mr-2" />
+              <span>Експорт/Імпорт</span>
             </TabsTrigger>
-            <TabsTrigger value="media-guide" className="text-xs lg:text-sm px-2">
-              <HelpCircle className="w-4 h-4 mr-0 lg:mr-2" />
-              <span className="hidden sm:inline">Довідка</span>
+            <TabsTrigger value="media-guide" className="flex-shrink-0">
+              <HelpCircle className="w-4 h-4 mr-2" />
+              <span>Довідка</span>
             </TabsTrigger>
           </TabsList>
 

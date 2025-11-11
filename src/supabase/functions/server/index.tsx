@@ -334,9 +334,13 @@ app.get("/make-server-4e0b1fee/gallery", async (c) => {
 app.post("/make-server-4e0b1fee/gallery", async (c) => {
   try {
     const body = await c.req.json();
-    const { password, url, type, description } = body;
+    const { url, type, description } = body;
+    const password = c.req.header("X-Admin-Password");
 
-    if (!(await checkAuth(password))) {
+    console.log(`🖼️ Gallery POST request - type: ${type}, has password: ${!!password}`);
+
+    if (!(await checkAuth(password || ""))) {
+      console.log("❌ Gallery add failed: Unauthorized");
       return c.json({ success: false, error: "Unauthorized" }, 401);
     }
 
@@ -349,10 +353,10 @@ app.post("/make-server-4e0b1fee/gallery", async (c) => {
     };
 
     await kv.set(`gallery:${item.id}`, item);
-    console.log('Gallery item added:', item);
+    console.log('✅ Gallery item added:', { id: item.id, type: item.type });
     return c.json({ success: true, data: item });
   } catch (error) {
-    console.log("Error adding gallery item:", error);
+    console.log("❌ Error adding gallery item:", error);
     return c.json({ success: false, error: String(error) }, 500);
   }
 });
@@ -363,14 +367,18 @@ app.delete("/make-server-4e0b1fee/gallery/:id", async (c) => {
     const { id } = c.req.param();
     const password = c.req.header("X-Admin-Password");
 
+    console.log(`🗑️ Gallery DELETE request - id: ${id}, has password: ${!!password}`);
+
     if (!(await checkAuth(password || ""))) {
+      console.log("❌ Gallery delete failed: Unauthorized");
       return c.json({ success: false, error: "Unauthorized" }, 401);
     }
 
     await kv.del(`gallery:${id}`);
+    console.log(`✅ Gallery item deleted: ${id}`);
     return c.json({ success: true });
   } catch (error) {
-    console.log("Error deleting gallery item:", error);
+    console.log("❌ Error deleting gallery item:", error);
     return c.json({ success: false, error: String(error) }, 500);
   }
 });
