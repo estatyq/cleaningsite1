@@ -1773,16 +1773,6 @@
     }
   }
 
-  .bg-background\/70 {
-    background-color: var(--background);
-  }
-
-  @supports (color: color-mix(in lab, red, red)) {
-    .bg-background\/70 {
-      background-color: color-mix(in oklab, var(--background) 70%, transparent);
-    }
-  }
-
   .bg-black {
     background-color: var(--color-black);
   }

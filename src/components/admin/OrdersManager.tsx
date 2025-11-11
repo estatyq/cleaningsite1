@@ -242,15 +242,9 @@ export function OrdersManager({ password }: OrdersManagerProps) {
               </div>
 
               <div className="bg-accent/10 border border-accent/30 rounded-lg p-5 text-center max-w-md mx-auto">
-                <p className="text-sm mb-2">
-                  💡 <strong className="text-accent">Підказка:</strong>
-                </p>
                 <p className="text-sm text-muted-foreground">
-                  Стандартний пароль адміністратора:
+                  Використовуйте пароль адміністратора для доступу до панелі управління
                 </p>
-                <code className="block mt-2 bg-background/70 px-4 py-2 rounded text-lg text-primary font-mono">
-                  admin123
-                </code>
               </div>
               
               <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
@@ -409,7 +403,7 @@ export function OrdersManager({ password }: OrdersManagerProps) {
               className="border-primary/30"
             >
               <RefreshCcw className="w-4 h-4 mr-2" />
-              Оновити
+              Оновит��
             </Button>
           </div>
           <CardDescription>
