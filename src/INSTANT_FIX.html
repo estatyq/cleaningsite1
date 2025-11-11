@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚨 Миттєве виправлення помилки 401</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+        
+        .alert {
+            background: #fee;
+            border: 2px solid #f88;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .alert h2 {
+            color: #c33;
+            margin-bottom: 10px;
+        }
+        
+        .success {
+            background: #efe;
+            border-color: #8f8;
+        }
+        
+        .success h2 {
+            color: #3c3;
+        }
+        
+        .info {
+            background: #eef;
+            border-color: #88f;
+        }
+        
+        .info h2 {
+            color: #33c;
+        }
+        
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            width: 100%;
+            margin: 10px 0;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        button.danger {
+            background: #f44;
+        }
+        
+        button.danger:hover {
+            background: #c33;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        .step {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f9f9f9;
+            border-left: 4px solid #667eea;
+            border-radius: 5px;
+        }
+        
+        .step h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        #status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin: 5px 0;
+            background: #f5f5f5;
+            border-radius: 5px;
+        }
+        
+        .checkbox-item input {
+            margin-right: 10px;
+        }
+        
+        .password-display {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 2px dashed #667eea;
+        }
+        
+        .password-display code {
+            font-size: 1.5em;
+            background: white;
+            padding: 10px 20px;
+            display: inline-block;
+            border-radius: 5px;
+        }
+        
+        .copy-btn {
+            background: #28a745;
+            padding: 10px 20px;
+            margin-left: 10px;
+            font-size: 0.9em;
+            width: auto;
+            display: inline-block;
+        }
+        
+        .copy-btn:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚨 Миттєве виправлення помилки 401</h1>
+        
+        <div class="alert">
+            <h2>⚠️ Ви бачите помилку:</h2>
+            <p><strong>❌ API Error (401): {"success":false,"error":"Unauthorized"}</strong></p>
+        </div>
+        
+        <div class="info">
+            <h2>💡 Причина:</h2>
+            <p>У вашому браузері збережений <strong>неправильний пароль</strong> з попереднього входу.</p>
+        </div>
+        
+        <div class="step">
+            <h3>📋 Правильний пароль:</h3>
+            <div class="password-display">
+                <code id="correctPassword">admin123</code>
+                <button class="copy-btn" onclick="copyPassword()">📋 Копіювати</button>
+            </div>
+            <p><small>⚠️ Це стандартний пароль. Після налагодження змініть його на безпечний!</small></p>
+        </div>
+        
+        <div class="step">
+            <h3>🔧 Автоматичне виправлення:</h3>
+            <p>Натисніть кнопку нижче, щоб:</p>
+            <div class="checkbox-item">
+                <input type="checkbox" disabled checked> Очистити SessionStorage
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" disabled checked> Очистити LocalStorage
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" disabled checked> Перезавантажити сторінку
+            </div>
+        </div>
+        
+        <button onclick="autoFix()" style="font-size: 1.2em; padding: 20px;">
+            ✨ ВИПРАВИТИ АВТОМАТИЧНО ✨
+        </button>
+        
+        <div class="step">
+            <h3>📝 Або виправте вручну:</h3>
+            <ol style="margin-left: 20px; margin-top: 10px;">
+                <li style="margin: 10px 0;">Відкрийте консоль браузера (натисніть <strong>F12</strong>)</li>
+                <li style="margin: 10px 0;">Скопіюйте цей код:</li>
+            </ol>
+            <div style="background: #2d2d2d; color: #f8f8f8; padding: 15px; border-radius: 5px; margin: 10px 0; font-family: monospace;">
+sessionStorage.clear();<br>
+localStorage.clear();<br>
+location.reload();
+            </div>
+            <ol start="3" style="margin-left: 20px; margin-top: 10px;">
+                <li style="margin: 10px 0;">Вставте в консоль і натисніть <strong>Enter</strong></li>
+                <li style="margin: 10px 0;">Увійдіть з паролем <code>admin123</code></li>
+            </ol>
+        </div>
+        
+        <div id="status"></div>
+        
+        <div class="step" style="margin-top: 30px; border-left-color: #f44;">
+            <h3 style="color: #f44;">⚡ Екстренний варіант:</h3>
+            <p>Якщо автоматичне виправлення не працює, очистіть ВСІ дані браузера:</p>
+            <button class="danger" onclick="nuclearOption()">
+                🔥 ОЧИСТИТИ ВСІ ДАНІ (Hard Reset)
+            </button>
+            <p style="margin-top: 10px; color: #666; font-size: 0.9em;">
+                ⚠️ Це видалить ВСІ дані сайту з вашого браузера
+            </p>
+        </div>
+        
+        <div class="info" style="margin-top: 30px;">
+            <h2>✅ Після виправлення:</h2>
+            <ol style="margin-left: 20px; margin-top: 10px;">
+                <li style="margin: 5px 0;">Сторінка перезавантажиться</li>
+                <li style="margin: 5px 0;">Ви побачите форму входу</li>
+                <li style="margin: 5px 0;">Введіть точно: <code>admin123</code> (без пробілів!)</li>
+                <li style="margin: 5px 0;">Натисніть "Увійти"</li>
+                <li style="margin: 5px 0;">Помилка 401 має зникнути</li>
+            </ol>
+        </div>
+    </div>
+    
+    <script>
+        function copyPassword() {
+            const password = document.getElementById('correctPassword').textContent;
+            navigator.clipboard.writeText(password).then(() => {
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✅ Скопійовано!';
+                btn.style.background = '#28a745';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '#28a745';
+                }, 2000);
+            });
+        }
+        
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.className = type;
+            status.innerHTML = '<h2>' + (type === 'success' ? '✅ Успіх!' : '❌ Помилка!') + '</h2><p>' + message + '</p>';
+            status.style.display = 'block';
+        }
+        
+        function autoFix() {
+            try {
+                // Очистити sessionStorage
+                sessionStorage.clear();
+                console.log('✅ SessionStorage cleared');
+                
+                // Очистити localStorage
+                localStorage.clear();
+                console.log('✅ LocalStorage cleared');
+                
+                // Показати повідомлення
+                showStatus('Кеш очищено! Сторінка перезавантажиться через 2 секунди...', 'success');
+                
+                // Перезавантажити через 2 секунди
+                setTimeout(() => {
+                    window.location.href = window.location.origin + '/admin';
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Error during auto-fix:', error);
+                showStatus('Помилка: ' + error.message + '. Спробуйте вручне виправлення.', 'alert');
+            }
+        }
+        
+        function nuclearOption() {
+            if (confirm('⚠️ ВИ ВПЕВНЕНІ?\n\nЦе видалить ВСІ дані сайту, включно з:\n• Cookies\n• LocalStorage\n• SessionStorage\n• IndexedDB\n• Cache\n\nПродовжити?')) {
+                try {
+                    // Очистити все
+                    sessionStorage.clear();
+                    localStorage.clear();
+                    
+                    // Очистити cookies
+                    document.cookie.split(";").forEach(function(c) { 
+                        document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+                    });
+                    
+                    // Якщо є caches API
+                    if ('caches' in window) {
+                        caches.keys().then(function(names) {
+                            for (let name of names) caches.delete(name);
+                        });
+                    }
+                    
+                    showStatus('🔥 ВСЕ ОЧИЩЕНО! Перезавантаження через 2 секунди...', 'success');
+                    
+                    setTimeout(() => {
+                        window.location.href = window.location.origin + '/admin';
+                    }, 2000);
+                    
+                } catch (error) {
+                    console.error('Error during nuclear option:', error);
+                    showStatus('Помилка: ' + error.message, 'alert');
+                }
+            }
+        }
+        
+        // Автоматична перевірка при завантаженні
+        window.onload = function() {
+            const savedPassword = sessionStorage.getItem('adminPassword');
+            if (savedPassword) {
+                const correctPassword = 'admin123';
+                if (savedPassword !== correctPassword) {
+                    const warning = document.createElement('div');
+                    warning.className = 'alert';
+                    warning.innerHTML = '<h2>⚠️ ВИЯВЛЕНО ПРОБЛЕМУ!</h2>' +
+                        '<p>В SessionStorage збережений неправильний пароль:</p>' +
+                        '<code>' + savedPassword + '</code>' +
+                        '<p style="margin-top: 10px;">Очікується: <code>' + correctPassword + '</code></p>' +
+                        '<p style="margin-top: 10px;"><strong>Натисніть "ВИПРАВИТИ АВТОМАТИЧНО" нижче!</strong></p>';
+                    document.querySelector('.container').insertBefore(warning, document.querySelector('.info'));
+                }
+            }
+        };
+    </script>
+</body>
+</html>
