@@ -82,7 +82,7 @@ export const BlogPage = memo(() => {
               >
                 {(post.image || post.video) && (
                   <div className="relative h-48 overflow-hidden">
-                    {post.image && !post.video && (
+                    {post.image && post.image.trim() !== '' && !post.video && (
                       <ImageWithFallback
                         src={post.image}
                         alt={post.title}
@@ -178,7 +178,7 @@ export const BlogPage = memo(() => {
               </DialogHeader>
 
               <div className="space-y-4">
-                {selectedPost.image && !selectedPost.video && (
+                {selectedPost.image && selectedPost.image.trim() !== '' && !selectedPost.video && (
                   <ImageWithFallback
                     src={selectedPost.image}
                     alt={selectedPost.title}

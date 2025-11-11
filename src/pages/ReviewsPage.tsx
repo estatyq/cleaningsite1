@@ -212,7 +212,7 @@ export const ReviewsPage = memo(() => {
               transition={{ delay: index * 0.1, duration: 0.5 }}
             >
               <Card className="h-full bg-card/30 backdrop-blur-xl border-border hover:border-accent/50 transition-all duration-300 overflow-hidden">
-                {review.image && (
+                {review.image && review.image.trim() !== '' && (
                   <div className="h-48 overflow-hidden">
                     <ImageWithFallback
                       src={review.image}

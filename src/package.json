@@ -1,0 +1,52 @@
+{
+  "name": "blisk-cleaning",
+  "version": "1.0.0",
+  "description": "Професійний сайт клінінгової компанії БлискКлінінг з неоновим стилем та повноцінною CMS",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "lucide-react": "^0.344.0",
+    "motion": "^10.16.4",
+    "framer-motion": "^11.0.8",
+    "sonner": "^2.0.3",
+    "@supabase/supabase-js": "^2.39.7",
+    "react-hook-form": "^7.55.0",
+    "recharts": "^2.12.2",
+    "clsx": "^2.1.0",
+    "tailwind-merge": "^2.2.1",
+    "class-variance-authority": "^0.7.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "typescript": "^5.5.3",
+    "vite": "^5.3.4",
+    "tailwindcss": "^4.0.0",
+    "autoprefixer": "^10.4.18",
+    "postcss": "^8.4.35",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.7",
+    "@typescript-eslint/eslint-plugin": "^7.13.1",
+    "@typescript-eslint/parser": "^7.13.1"
+  },
+  "keywords": [
+    "cleaning",
+    "клінінг",
+    "website",
+    "react",
+    "vite",
+    "supabase",
+    "cms"
+  ],
+  "author": "БлискКлінінг",
+  "license": "MIT"
+}

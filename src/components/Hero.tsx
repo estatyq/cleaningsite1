@@ -226,32 +226,36 @@ export const Hero = memo(() => {
             transition={{ delay: 0.5, duration: 1 }}
             className="relative space-y-4"
           >
-            <motion.div
-              whileHover={prefersReducedMotion ? {} : { scale: 1.02 }}
-              transition={{ duration: 0.3 }}
-              className="relative rounded-2xl overflow-hidden border-2 border-primary/30 neon-glow"
-            >
-              <ImageWithFallback
-                src={heroImages.mainImage}
-                alt="Професійне прибирання"
-                className="w-full h-auto"
-              />
-            </motion.div>
+            {heroImages.mainImage && heroImages.mainImage.trim() !== '' && (
+              <motion.div
+                whileHover={prefersReducedMotion ? {} : { scale: 1.02 }}
+                transition={{ duration: 0.3 }}
+                className="relative rounded-2xl overflow-hidden border-2 border-primary/30 neon-glow"
+              >
+                <ImageWithFallback
+                  src={heroImages.mainImage}
+                  alt="Професійне прибирання"
+                  className="w-full h-auto"
+                />
+              </motion.div>
+            )}
 
             {/* Додаткове зображення */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8, duration: 0.8 }}
-              whileHover={prefersReducedMotion ? {} : { scale: 1.02 }}
-              className="relative rounded-2xl overflow-hidden border-2 border-secondary/30 hover:border-secondary/50 transition-all duration-300 neon-glow"
-            >
-              <ImageWithFallback
-                src={heroImages.secondaryImage}
-                alt="Результати прибирання"
-                className="w-full h-auto"
-              />
-            </motion.div>
+            {heroImages.secondaryImage && heroImages.secondaryImage.trim() !== '' && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8, duration: 0.8 }}
+                whileHover={prefersReducedMotion ? {} : { scale: 1.02 }}
+                className="relative rounded-2xl overflow-hidden border-2 border-secondary/30 hover:border-secondary/50 transition-all duration-300 neon-glow"
+              >
+                <ImageWithFallback
+                  src={heroImages.secondaryImage}
+                  alt="Результати прибирання"
+                  className="w-full h-auto"
+                />
+              </motion.div>
+            )}
 
             <StatBadge
               delay={1.5}

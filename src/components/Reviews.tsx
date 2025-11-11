@@ -70,7 +70,7 @@ const ReviewCard = memo(
           <div className="absolute inset-0 bg-gradient-to-br from-accent/0 to-accent/0 group-hover:from-accent/5 group-hover:to-transparent transition-all duration-500" />
 
           <CardContent className="pt-6 relative z-10">
-            {review.image && (
+            {review.image && review.image.trim() !== '' && (
               <div className="mb-4 -mt-6 -mx-6 h-48 overflow-hidden">
                 <ImageWithFallback
                   src={review.image}
@@ -267,8 +267,11 @@ export const Reviews = memo(({ onNavigate }: { onNavigate?: (page: string) => vo
                     type="url"
                     value={formData.image}
                     onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                    placeholder="https://example.com/photo.jpg"
+                    placeholder="https://i.imgur.com/example.jpg"
                   />
+                  <p className="text-xs text-muted-foreground">
+                    💡 Вкажіть пряме посилання на зображення (має закінчуватись на .jpg, .png тощо)
+                  </p>
                 </div>
 
                 <Button type="submit" disabled={submitting} className="w-full">

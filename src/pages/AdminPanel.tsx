@@ -13,9 +13,10 @@ import { ReviewsManager } from '../components/admin/ReviewsManager';
 import { PricingManager } from '../components/admin/PricingManager';
 import { GalleryManager } from '../components/admin/GalleryManager';
 import { BlogManager } from '../components/admin/BlogManager';
-import { ConnectionTest } from '../components/admin/ConnectionTest';
-import { PasswordDiagnostic } from '../components/admin/PasswordDiagnostic';
 import { AccountManager } from '../components/admin/AccountManager';
+import { DataDiagnostic } from '../components/admin/DataDiagnostic';
+import { DataExportImport } from '../components/admin/DataExportImport';
+import { MediaGuide } from '../components/admin/MediaGuide';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card';
 import { Button } from '../components/ui/button';
@@ -32,8 +33,8 @@ import {
   Phone,
   Percent,
   ShoppingCart,
-  Wifi,
-  Shield
+  Download,
+  HelpCircle
 } from 'lucide-react';
 import { toast } from 'sonner@2.0.3';
 
@@ -144,7 +145,7 @@ export const AdminPanel = memo(() => {
   }, []);
 
   const handleResetPassword = useCallback(async () => {
-    if (!confirm('⚠️ Це скине пароль до стандартного "admin123". Продовжити?')) {
+    if (!confirm('⚠️ Це скине пароль до стандартного значення. Продовжити?')) {
       return;
     }
     
@@ -168,7 +169,7 @@ export const AdminPanel = memo(() => {
 
       const data = await response.json();
       
-      toast.success(`Пароль скинуто до: ${data.defaultPassword}`);
+      toast.success('Пароль успішно скинуто до стандартного значення');
       setLoginError(null);
       setPassword('');
     } catch (error) {
@@ -223,14 +224,11 @@ export const AdminPanel = memo(() => {
                       setPassword(e.target.value);
                       setLoginError(null);
                     }}
-                    placeholder="Введіть пароль"
+                    placeholder="Введіть пароль адміністратора"
                     required
                     autoFocus
                     className={loginError ? 'border-destructive focus:border-destructive' : ''}
                   />
-                  <p className="text-xs text-muted-foreground">
-                    💡 Стандартний пароль: <code className="bg-background/50 px-2 py-0.5 rounded text-primary font-mono">admin123</code>
-                  </p>
                 </div>
                 <Button type="submit" className="w-full neon-glow" disabled={loading}>
                   {loading ? (
@@ -279,10 +277,7 @@ export const AdminPanel = memo(() => {
                 <strong>Забули пароль?</strong>
               </p>
               <p className="text-xs text-muted-foreground">
-                За замовчуванням використовується пароль <code className="bg-background/50 px-2 py-0.5 rounded text-primary font-mono">admin123</code>
-              </p>
-              <p className="text-xs text-muted-foreground mt-2">
-                Якщо ви змінили пароль в коді сервера, використовуйте новий пароль
+                Використовуйте кнопку "Скинути пароль" вище або зверніться до адміністратора системи
               </p>
             </motion.div>
           )}
@@ -310,38 +305,10 @@ export const AdminPanel = memo(() => {
 
         <AdminWelcome onTabChange={setActiveTab} password={password} />
 
-        {password === 'admin123' && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-6"
-          >
-            <Card className="bg-yellow-500/10 border-yellow-500/30 backdrop-blur-xl">
-              <CardContent className="flex items-center gap-4 py-4">
-                <Shield className="w-8 h-8 text-yellow-500 flex-shrink-0" />
-                <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-yellow-500 mb-1">
-                    Увага: Використовується стандартний пароль!
-                  </h3>
-                  <p className="text-sm text-yellow-500/90">
-                    Для безпеки системи рекомендуємо змінити стандартний пароль на власний.
-                  </p>
-                </div>
-                <Button 
-                  onClick={() => setActiveTab('account')}
-                  className="bg-yellow-500 hover:bg-yellow-600 text-black"
-                >
-                  Змінити зараз
-                </Button>
-              </CardContent>
-            </Card>
-          </motion.div>
-        )}
 
-        <PasswordDiagnostic password={password} />
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-5 lg:grid-cols-12 mb-8 h-auto gap-1">
+          <TabsList className="grid w-full grid-cols-5 lg:grid-cols-14 mb-8 h-auto gap-1">
             <TabsTrigger value="orders" className="text-xs lg:text-sm px-2">
               <ShoppingCart className="w-4 h-4 mr-0 lg:mr-2" />
               <span className="hidden sm:inline">Замовлення</span>
@@ -394,6 +361,14 @@ export const AdminPanel = memo(() => {
               <Wifi className="w-4 h-4 mr-0 lg:mr-2" />
               <span className="hidden sm:inline">Діагностика</span>
             </TabsTrigger>
+            <TabsTrigger value="export-import" className="text-xs lg:text-sm px-2">
+              <Download className="w-4 h-4 mr-0 lg:mr-2" />
+              <span className="hidden sm:inline">Експорт/Імпорт</span>
+            </TabsTrigger>
+            <TabsTrigger value="media-guide" className="text-xs lg:text-sm px-2">
+              <HelpCircle className="w-4 h-4 mr-0 lg:mr-2" />
+              <span className="hidden sm:inline">Довідка</span>
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="orders">
@@ -445,7 +420,18 @@ export const AdminPanel = memo(() => {
           </TabsContent>
 
           <TabsContent value="diagnostics">
-            <ConnectionTest />
+            <div className="space-y-6">
+              <DataDiagnostic password={password} />
+              <ConnectionTest />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="export-import">
+            <DataExportImport password={password} />
+          </TabsContent>
+
+          <TabsContent value="media-guide">
+            <MediaGuide />
           </TabsContent>
         </Tabs>
       </div>

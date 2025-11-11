@@ -220,8 +220,12 @@ export const AdminWelcome = memo(({ onTabChange, password }: AdminWelcomeProps) 
                 >
                   🔐 Змініть пароль для безпеки
                 </Badge>
-                <Badge variant="secondary" className="text-xs">
-                  📚 Детальна інструкція в GUIDE_UA.md
+                <Badge 
+                  variant="secondary" 
+                  className="text-xs cursor-pointer hover:bg-secondary/80"
+                  onClick={() => onTabChange?.('export-import')}
+                >
+                  💾 Експорт/Імпорт даних
                 </Badge>
                 {password && (
                   <Badge variant="default" className="text-xs bg-primary/20">

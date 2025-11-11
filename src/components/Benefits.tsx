@@ -158,17 +158,19 @@ export const Benefits = memo(() => {
             transition={{ duration: 0.8 }}
             className="relative"
           >
-            <motion.div
-              whileHover={prefersReducedMotion ? {} : { scale: 1.02 }}
-              transition={{ duration: 0.3 }}
-              className="relative rounded-2xl overflow-hidden border-2 border-secondary/30 neon-glow-purple shadow-2xl"
-            >
-              <ImageWithFallback
-                src={benefitsImage}
-                alt="Чистий дім"
-                className="w-full h-auto"
-              />
-            </motion.div>
+            {benefitsImage && benefitsImage.trim() !== '' && (
+              <motion.div
+                whileHover={prefersReducedMotion ? {} : { scale: 1.02 }}
+                transition={{ duration: 0.3 }}
+                className="relative rounded-2xl overflow-hidden border-2 border-secondary/30 neon-glow-purple shadow-2xl"
+              >
+                <ImageWithFallback
+                  src={benefitsImage}
+                  alt="Чистий дім"
+                  className="w-full h-auto"
+                />
+              </motion.div>
+            )}
           </motion.div>
         </div>
       </div>

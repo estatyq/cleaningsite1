@@ -183,11 +183,17 @@ const GalleryGrid = memo(({ items, onItemClick }: { items: GalleryItem[]; onItem
           className="relative aspect-video rounded-lg overflow-hidden cursor-pointer border-2 border-border hover:border-primary transition-all shadow-lg hover:shadow-xl hover:shadow-primary/20 group"
         >
           {item.type === 'photo' ? (
-            <ImageWithFallback
-              src={item.url}
-              alt={item.description}
-              className="w-full h-full object-cover"
-            />
+            item.url && item.url.trim() !== '' ? (
+              <ImageWithFallback
+                src={item.url}
+                alt={item.description}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full bg-muted flex items-center justify-center">
+                <ImageIcon className="w-12 h-12 text-muted-foreground" />
+              </div>
+            )
           ) : (
             <div className="relative w-full h-full bg-black">
               {(() => {

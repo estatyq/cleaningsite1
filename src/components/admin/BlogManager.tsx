@@ -187,8 +187,21 @@ export const BlogManager = memo(({ password }: BlogManagerProps) => {
           <div className="flex items-center justify-between">
             <div>
               <CardTitle>Управління блогом</CardTitle>
-              <CardDescription>
-                Створюйте та редагуйте пости блогу
+              <CardDescription className="flex items-center gap-2">
+                <span>Створюйте та редагуйте пости блогу</span>
+                <a 
+                  href="#media-guide" 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const tabTrigger = document.querySelector('[value="media-guide"]');
+                    if (tabTrigger instanceof HTMLElement) {
+                      tabTrigger.click();
+                    }
+                  }}
+                  className="text-xs text-primary hover:underline inline-flex items-center gap-1"
+                >
+                  📚 Інструкція
+                </a>
               </CardDescription>
               <div className="flex gap-4 mt-4">
                 <Badge variant="outline" className="bg-green-500/10 border-green-500/30">

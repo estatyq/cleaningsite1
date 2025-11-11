@@ -12,7 +12,7 @@ export interface VideoInfo {
 /**
  * Get YouTube video ID from various URL formats
  */
-function getYouTubeVideoId(url: string): string | null {
+export function getYouTubeVideoId(url: string): string | null {
   const patterns = [
     /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\?\/]+)/,
     /youtube\.com\/embed\/([^&\?\/]+)/,
@@ -152,4 +152,19 @@ export function isDirectVideoFile(url: string): boolean {
     lowerUrl.endsWith('.ogg') ||
     lowerUrl.endsWith('.mov')
   );
+}
+
+/**
+ * Check if URL is a video (platform or direct file)
+ */
+export function isVideoUrl(url: string): boolean {
+  return isVideoPlatformUrl(url) || isDirectVideoFile(url);
+}
+
+/**
+ * Get YouTube embed URL from various URL formats
+ */
+export function getYouTubeEmbedUrl(url: string): string | null {
+  const videoId = getYouTubeVideoId(url);
+  return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
 }

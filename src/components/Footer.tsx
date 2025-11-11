@@ -3,6 +3,11 @@ import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { getContacts, getServices, getSocialMedia, getBranding } from '../utils/api';
 
+interface FooterProps {
+  currentPage: string;
+  onNavigate: (page: string) => void;
+}
+
 interface PhoneNumber {
   number: string;
   viber: boolean;
@@ -34,7 +39,7 @@ interface Branding {
   companyName: string;
 }
 
-export function Footer() {
+export function Footer({ currentPage, onNavigate }: FooterProps) {
   const currentYear = new Date().getFullYear();
   const [contacts, setContacts] = useState<Contacts>({
     phones: [{ number: '+380 (12) 345-67-89', viber: false, telegram: false, whatsapp: false }],
@@ -97,7 +102,16 @@ export function Footer() {
     }
   };
 
-
+  const handleNavigateToSection = (sectionId: string) => {
+    if (currentPage !== 'home') {
+      onNavigate('home');
+      setTimeout(() => {
+        document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    } else {
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   const footerLinks = [
     {
@@ -105,22 +119,22 @@ export function Footer() {
       links: services.length > 0 
         ? services.map(service => ({ 
             label: service.title, 
-            href: '#services' 
+            action: () => handleNavigateToSection('services'),
           }))
         : [
-            { label: 'Прибирання квартир', href: '#services' },
-            { label: 'Прибирання офісів', href: '#services' },
-            { label: 'Генеральне прибирання', href: '#services' },
-            { label: 'Миття вікон', href: '#services' },
+            { label: 'Прибирання квартир', action: () => handleNavigateToSection('services') },
+            { label: 'Прибирання офісів', action: () => handleNavigateToSection('services') },
+            { label: 'Генеральне прибирання', action: () => handleNavigateToSection('services') },
+            { label: 'Миття вікон', action: () => handleNavigateToSection('services') },
           ],
     },
     {
       title: 'Компанія',
       links: [
-        { label: 'Про нас', href: '#benefits' },
-        { label: 'Відгуки', href: '#reviews' },
-        { label: 'Контакти', href: '#contact' },
-        { label: 'Вакансії', href: '#' },
+        { label: 'Про нас', action: () => handleNavigateToSection('benefits') },
+        { label: 'Відгуки', action: () => onNavigate('reviews') },
+        { label: 'Контакти', action: () => handleNavigateToSection('contact') },
+        { label: 'Вакансії', action: () => handleNavigateToSection('contact') },
       ],
     },
   ];
@@ -191,9 +205,12 @@ export function Footer() {
                     whileHover={{ x: 5 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <a href={link.href} className="hover:text-primary transition-colors">
+                    <button 
+                      onClick={link.action}
+                      className="hover:text-primary transition-colors text-left"
+                    >
                       {link.label}
-                    </a>
+                    </button>
                   </motion.li>
                 ))}
               </ul>

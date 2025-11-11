@@ -178,8 +178,21 @@ export const GalleryManager = memo(({ password }: GalleryManagerProps) => {
           <div className="flex items-center justify-between">
             <div>
               <CardTitle>Галерея робіт</CardTitle>
-              <CardDescription>
-                Додавайте фото та відео ваших робіт
+              <CardDescription className="flex items-center gap-2">
+                <span>Додавайте фото та відео ваших робіт</span>
+                <a 
+                  href="#media-guide" 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const tabTrigger = document.querySelector('[value="media-guide"]');
+                    if (tabTrigger instanceof HTMLElement) {
+                      tabTrigger.click();
+                    }
+                  }}
+                  className="text-xs text-primary hover:underline inline-flex items-center gap-1"
+                >
+                  📚 Інструкція
+                </a>
               </CardDescription>
             </div>
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -279,11 +292,17 @@ export const GalleryManager = memo(({ password }: GalleryManagerProps) => {
                     className="relative group border border-border rounded-lg overflow-hidden bg-card/50"
                   >
                     {item.type === 'photo' ? (
-                      <ImageWithFallback
-                        src={item.url}
-                        alt={item.description || 'Gallery item'}
-                        className="w-full h-48 object-cover"
-                      />
+                      item.url && item.url.trim() !== '' ? (
+                        <ImageWithFallback
+                          src={item.url}
+                          alt={item.description || 'Gallery item'}
+                          className="w-full h-48 object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-48 bg-muted flex items-center justify-center">
+                          <ImageIcon className="w-12 h-12 text-muted-foreground" />
+                        </div>
+                      )
                     ) : (
                       <div className="w-full h-48 bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
                         <div className="text-center">

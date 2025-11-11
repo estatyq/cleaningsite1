@@ -167,8 +167,24 @@ export const ReviewsManager = memo(({ password }: ReviewsManagerProps) => {
       <Card className="bg-card/30 backdrop-blur-xl border-border">
         <CardHeader>
           <CardTitle>Управління відгуками</CardTitle>
-          <CardDescription>
-            Модеруйте відгуки клієнтів, схвалюйте або видаляйте їх
+          <CardDescription className="flex items-center justify-between gap-2">
+            <span>Модеруйте відгуки клієнтів, схвалюйте або видаляйте їх</span>
+            <a 
+              href="#media-guide" 
+              onClick={(e) => {
+                e.preventDefault();
+                const url = new URL(window.location.href);
+                url.hash = '';
+                window.history.pushState({}, '', url);
+                const tabTrigger = document.querySelector('[value="media-guide"]');
+                if (tabTrigger instanceof HTMLElement) {
+                  tabTrigger.click();
+                }
+              }}
+              className="text-xs text-primary hover:underline inline-flex items-center gap-1 flex-shrink-0"
+            >
+              📚 Як завантажувати фото
+            </a>
           </CardDescription>
           <div className="flex gap-4 mt-4">
             <Badge variant="outline" className="bg-green-500/10 border-green-500/30">
@@ -230,7 +246,7 @@ export const ReviewsManager = memo(({ password }: ReviewsManagerProps) => {
                         ))}
                       </div>
 
-                      {review.image && (
+                      {review.image && review.image.trim() !== '' && (
                         <div className="mb-3 rounded-lg overflow-hidden">
                           <ImageWithFallback
                             src={review.image}

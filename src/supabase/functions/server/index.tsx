@@ -234,12 +234,13 @@ app.post("/make-server-4e0b1fee/reviews", async (c) => {
       name,
       text,
       rating,
-      image: image || null,
+      image: (image && image.trim() !== '') ? image.trim() : null,
       approved: false,
       createdAt: new Date().toISOString(),
     };
 
     await kv.set(`review:${review.id}`, review);
+    console.log('Review created:', review);
     return c.json({ success: true, data: review });
   } catch (error) {
     console.log("Error submitting review:", error);
@@ -341,13 +342,14 @@ app.post("/make-server-4e0b1fee/gallery", async (c) => {
 
     const item = {
       id: Date.now().toString(),
-      url,
+      url: (url && url.trim() !== '') ? url.trim() : '',
       type, // 'photo' or 'video'
       description: description || "",
       createdAt: new Date().toISOString(),
     };
 
     await kv.set(`gallery:${item.id}`, item);
+    console.log('Gallery item added:', item);
     return c.json({ success: true, data: item });
   } catch (error) {
     console.log("Error adding gallery item:", error);
@@ -435,14 +437,15 @@ app.post("/make-server-4e0b1fee/blog", async (c) => {
       id: postId,
       title,
       content,
-      image: image || null,
-      video: video || null,
+      image: (image && image.trim() !== '') ? image.trim() : null,
+      video: (video && video.trim() !== '') ? video.trim() : null,
       published: published || false,
       createdAt: id ? (await kv.get(`blog:${id}`))?.createdAt : new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
 
     await kv.set(`blog:${postId}`, post);
+    console.log('Blog post saved:', post);
     return c.json({ success: true, data: post });
   } catch (error) {
     console.log("Error saving blog post:", error);
@@ -1032,6 +1035,167 @@ app.post("/make-server-4e0b1fee/reset-password", async (c) => {
   }
 });
 
+// ============ EXPORT/IMPORT ROUTES ============
+
+// Export all data (admin only)
+app.get("/make-server-4e0b1fee/export/all", async (c) => {
+  try {
+    const password = c.req.header('X-Admin-Password');
+    if (!(await checkAuth(password))) {
+      return c.json({ success: false, error: "Unauthorized" }, 401);
+    }
+
+    console.log("📦 Starting full data export...");
+
+    // Collect all data
+    const exportData = {
+      version: "1.0",
+      exportDate: new Date().toISOString(),
+      data: {
+        services: await kv.getByPrefix("service:"),
+        contacts: await kv.get("contacts"),
+        branding: await kv.get("branding"),
+        heroImages: await kv.get("hero_images"),
+        benefits: await kv.get("benefits"),
+        discount: await kv.get("discount_settings"),
+        pricing: {
+          apartment: await kv.get("pricing:apartment"),
+          house: await kv.get("pricing:house"),
+          office: await kv.get("pricing:office"),
+          afterRepair: await kv.get("pricing:after-repair"),
+        },
+        reviews: await kv.getByPrefix("review:"),
+        gallery: await kv.getByPrefix("gallery:"),
+        blog: await kv.getByPrefix("blog:"),
+        socialMedia: await kv.get("social_media"),
+      }
+    };
+
+    console.log("✅ Export completed successfully");
+    return c.json({ success: true, data: exportData });
+  } catch (error) {
+    console.log("❌ Error exporting data:", error);
+    return c.json({ success: false, error: String(error) }, 500);
+  }
+});
+
+// Import data (admin only)
+app.post("/make-server-4e0b1fee/import/all", async (c) => {
+  try {
+    const password = c.req.header('X-Admin-Password');
+    if (!(await checkAuth(password))) {
+      return c.json({ success: false, error: "Unauthorized" }, 401);
+    }
+
+    const body = await c.req.json();
+    const { data: importData, mode = "merge" } = body; // mode: "merge" or "overwrite"
+
+    console.log("📥 Starting data import, mode:", mode);
+
+    let imported = {
+      services: 0,
+      reviews: 0,
+      gallery: 0,
+      blog: 0,
+      other: 0
+    };
+
+    // Import services
+    if (importData.data?.services && Array.isArray(importData.data.services)) {
+      if (mode === "overwrite") {
+        // Delete existing services
+        const existing = await kv.getByPrefix("service:");
+        for (const service of existing) {
+          await kv.del(`service:${service.id}`);
+        }
+      }
+      for (const service of importData.data.services) {
+        await kv.set(`service:${service.id}`, service);
+        imported.services++;
+      }
+    }
+
+    // Import single-value data
+    const singleKeys = [
+      'contacts', 'branding', 'heroImages', 'benefits', 
+      'discount', 'socialMedia'
+    ];
+    
+    for (const key of singleKeys) {
+      if (importData.data?.[key]) {
+        const kvKey = key === 'heroImages' ? 'hero_images' 
+                    : key === 'discount' ? 'discount_settings'
+                    : key === 'socialMedia' ? 'social_media'
+                    : key;
+        await kv.set(kvKey, importData.data[key]);
+        imported.other++;
+      }
+    }
+
+    // Import pricing
+    if (importData.data?.pricing) {
+      for (const [category, data] of Object.entries(importData.data.pricing)) {
+        if (data) {
+          await kv.set(`pricing:${category}`, data);
+          imported.other++;
+        }
+      }
+    }
+
+    // Import reviews
+    if (importData.data?.reviews && Array.isArray(importData.data.reviews)) {
+      if (mode === "overwrite") {
+        const existing = await kv.getByPrefix("review:");
+        for (const review of existing) {
+          await kv.del(`review:${review.id}`);
+        }
+      }
+      for (const review of importData.data.reviews) {
+        await kv.set(`review:${review.id}`, review);
+        imported.reviews++;
+      }
+    }
+
+    // Import gallery
+    if (importData.data?.gallery && Array.isArray(importData.data.gallery)) {
+      if (mode === "overwrite") {
+        const existing = await kv.getByPrefix("gallery:");
+        for (const item of existing) {
+          await kv.del(`gallery:${item.id}`);
+        }
+      }
+      for (const item of importData.data.gallery) {
+        await kv.set(`gallery:${item.id}`, item);
+        imported.gallery++;
+      }
+    }
+
+    // Import blog
+    if (importData.data?.blog && Array.isArray(importData.data.blog)) {
+      if (mode === "overwrite") {
+        const existing = await kv.getByPrefix("blog:");
+        for (const post of existing) {
+          await kv.del(`blog:${post.id}`);
+        }
+      }
+      for (const post of importData.data.blog) {
+        await kv.set(`blog:${post.id}`, post);
+        imported.blog++;
+      }
+    }
+
+    console.log("✅ Import completed:", imported);
+    return c.json({ 
+      success: true, 
+      message: "Data imported successfully",
+      imported 
+    });
+  } catch (error) {
+    console.log("❌ Error importing data:", error);
+    return c.json({ success: false, error: String(error) }, 500);
+  }
+});
+
 // Catch-all route for debugging
 app.all("*", (c) => {
   console.log(`⚠️ Unhandled route: ${c.req.method} ${c.req.url}`);
@@ -1060,7 +1224,9 @@ app.all("*", (c) => {
       "GET /make-server-4e0b1fee/password-status",
       "GET /make-server-4e0b1fee/validate-password",
       "GET /make-server-4e0b1fee/admin-username",
-      "POST /make-server-4e0b1fee/admin-username"
+      "POST /make-server-4e0b1fee/admin-username",
+      "GET /make-server-4e0b1fee/export/all",
+      "POST /make-server-4e0b1fee/import/all"
     ]
   }, 404);
 });
